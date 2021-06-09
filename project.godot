@@ -12,6 +12,12 @@ config_version=4
 
 config/name="GMTK2021"
 
+[importer_defaults]
+
+texture={
+"flags/filter": false
+}
+
 [physics]
 
 common/enable_pause_aware_picking=true
