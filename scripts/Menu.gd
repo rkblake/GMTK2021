@@ -15,6 +15,9 @@ func _ready():
 	$Options/Column/SFX/SFXVolumeSlider.value = db2linear(AudioServer.get_bus_volume_db(sfx_bus))
 
 func _input(event):
+	if event is InputEventKey and event.pressed and event.scancode == KEY_ESCAPE and state == GAME:
+		pause_game()
+	
 	if event is InputEventMouseButton and event.pressed and event.button_index == BUTTON_LEFT:
 		var start = $MainMenu/HBoxContainer/VBoxContainer/Buttons/Start.get_global_rect()
 		var options = $MainMenu/HBoxContainer/VBoxContainer/Buttons/Options.get_global_rect()
@@ -22,17 +25,19 @@ func _input(event):
 		var credits = $MainMenu/HBoxContainer/VBoxContainer/Buttons/Credits.get_global_rect()
 		var paused_continue = $PauseMenu/MarginContainer/HBoxContainer/Continue.get_global_rect()
 		var paused_options = $PauseMenu/MarginContainer/HBoxContainer/Options.get_global_rect()
-		var main_menu = $"PauseMenu/MarginContainer/HBoxContainer/Main Menu".get_global_rect()
+		var main_menu = $PauseMenu/MarginContainer/HBoxContainer/MainMenu.get_global_rect()
 		var back = $Options/Column/Back.get_global_rect()
+		
 		if start.has_point(event.position):
-			pass
+			start_game()
 		elif options.has_point(event.position):
 			$MainMenu.hide()
 			$Options.show()
 			change_state(OPTIONS)
 		elif exit.has_point(event.position):
-			pass
+			get_tree().quit()
 		elif credits.has_point(event.position):
+			# TODO
 			pass
 		elif state == PAUSED:
 			if paused_continue.has_point(event.position):
@@ -46,6 +51,7 @@ func _input(event):
 				# TODO: confirm popup
 				$PauseMenu.hide()
 				$MainMenu.show()
+				$BG.show()
 				change_state(MAIN_MENU)
 		elif state == OPTIONS:
 			if back.has_point(event.position):
@@ -55,6 +61,19 @@ func _input(event):
 					change_state(MAIN_MENU)
 				elif last_state == PAUSED:
 					change_state(GAME)
+
+
+func start_game():
+	change_state(GAME)
+	get_parent().start_game()
+	$MainMenu.hide()
+	$BG.hide()
+
+
+func pause_game():
+	change_state(PAUSED)
+	get_parent().pause_game()
+	$PauseMenu.show()
 
 
 func change_state(new_state):
