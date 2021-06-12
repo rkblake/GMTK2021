@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Cupid_Idle_Animation 1_3.png-d4029594fcb6fedaf8ce2fa3d9381ddd.stex"
+path="res://.import/soldier1_Animation 4_0.png-09e0d124bce0d83ec51e3f39cba1e010.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Cupid_Idle_Animation_1_0/Cupid_Idle_Animation 1_3.png"
-dest_files=[ "res://.import/Cupid_Idle_Animation 1_3.png-d4029594fcb6fedaf8ce2fa3d9381ddd.stex" ]
+source_file="res://assets/soldier1_Animation_4_0/soldier1_Animation 4_0.png"
+dest_files=[ "res://.import/soldier1_Animation 4_0.png-09e0d124bce0d83ec51e3f39cba1e010.stex" ]
 
 [params]
 

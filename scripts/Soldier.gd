@@ -1,9 +1,10 @@
 extends Area2D
 
 onready var rays = $rays.get_children()
-var boids_in_vision := []
+var humans_in_vision := []
+var zombies_in_vision := []
 export var vel := Vector2.ZERO
-const SPEED := 1
+const SPEED := 1.5
 const MOVV := 48
 var rotate = 0
 
@@ -17,7 +18,7 @@ func _ready():
 
 
 func set_target(target):
-	self.target = target
+	pass
 
 
 func _physics_process(delta):
@@ -26,19 +27,16 @@ func _physics_process(delta):
 	vel = vel.normalized() * SPEED
 	move()
 	rotate = lerp_angle(rotate, vel.angle_to_point(Vector2.ZERO), 0.4)
+	$AnimatedSprite.flip_h = vel.x > 0
 
 
-func boids():
-	if target:
-			var dist = (target.position - position)
-			vel += dist * TARGET_WEIGHT
-	
-	if boids_in_vision:
-		var num_boids := boids_in_vision.size()
+func boids():	
+	if humans_in_vision:
+		var num_boids := humans_in_vision.size()
 		var avg_vel := Vector2.ZERO
 		var avg_pos := Vector2.ZERO
 		var steer_away := Vector2.ZERO
-		for boid in boids_in_vision:
+		for boid in humans_in_vision:
 			avg_vel += boid.vel
 			avg_pos += boid.position
 			steer_away -= (boid.global_position - global_position) * (MOVV/(global_position - boid.global_position).length())
@@ -66,7 +64,7 @@ func checkCollision():
 		var r : RayCast2D = ray
 		if r.is_colliding():
 			if r.get_collider().is_in_group("blocks"):
-				var dist := 200/(r.get_collision_point() - global_position).length_squared()
+				var dist := 100/(r.get_collision_point() - global_position).length_squared()
 				vel -= (r.cast_to.rotated(rotate) * dist) * COLLISION_AVOID_WEIGHT
 
 
@@ -74,15 +72,18 @@ func move():
 	global_position += vel
 
 
-
 func _on_vision_area_entered(area):
-	if area != self and area.is_in_group("boid"):
-		boids_in_vision.append(area)
+	if area != self and area.is_in_group("human"):
+		humans_in_vision.append(area)
+	elif area != self and area.is_in_group("zombie"):
+		zombies_in_vision.append(area)
 
 
 func _on_vision_area_exited(area):
-	if area.is_in_group("boid"):
-		boids_in_vision.erase(area)
+	if area.is_in_group("human"):
+		humans_in_vision.erase(area)
+	elif area.is_in_group("zombie"):
+		zombies_in_vision.erase(area) # TODO: zombie dying doesnt remove from this array. will cause crash
 
 
 func _on_Boid_body_entered(body):
