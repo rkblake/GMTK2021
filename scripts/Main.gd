@@ -10,8 +10,13 @@ func _input(event):
 
 func start_game():
 	var new_level = level1.instance()
-	add_child(new_level)
+	$level.add_child(new_level)
+	get_tree().paused = false
 
 
 func pause_game():
 	get_tree().paused = true
+
+
+func resume_game():
+	get_tree().paused = false

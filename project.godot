@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node",
+"class": "StateMachine",
+"language": "GDScript",
+"path": "res://scripts/StateMachine.gd"
+} ]
+_global_script_class_icons={
+"StateMachine": ""
+}
+
 [application]
 
 config/name="GMTK2021"
@@ -17,6 +27,14 @@ run/main_scene="res://scenes/Game.tscn"
 
 texture={
 "flags/filter": false
+}
+
+[input]
+
+jump={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
+ ]
 }
 
 [physics]

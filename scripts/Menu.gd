@@ -42,6 +42,7 @@ func _input(event):
 		elif state == PAUSED:
 			if paused_continue.has_point(event.position):
 				$PauseMenu.hide()
+				get_parent().resume_game()
 				change_state(GAME)
 			elif paused_options.has_point(event.position):
 				$PauseMenu.hide()
