@@ -1,6 +1,6 @@
 extends Node2D
 
-export var num := 50
+export var num := 25
 export var margin := 100
 var screensize : Vector2
 
@@ -9,12 +9,12 @@ func _ready():
 	randomize()
 	for i in num:
 		spawn_zombie()
-#	for i in num:
-#		spawn_soldier()
+	for i in num:
+		spawn_human()
 
 
 func spawn_zombie():
-	var zombie : Area2D = preload("res://scenes/Zombie.tscn").instance()
+	var zombie : KinematicBody2D = preload("res://scenes/Zombie.tscn").instance()
 	$zombies.add_child(zombie)
 #	boid.modulate = Color(randf(), randf(), randf(), 1)
 	zombie.global_position = Vector2((rand_range(margin, screensize.x - margin)), (rand_range(margin, screensize.y - margin))) # TODO: define area for spawning
@@ -27,7 +27,14 @@ func spawn_soldier():
 	human.global_position = Vector2((rand_range(margin, screensize.x - margin)), (rand_range(margin, screensize.y - margin))) # TODO: define area for spawning
 
 
+func spawn_human():
+	var human : KinematicBody2D = preload("res://scenes/Human.tscn").instance()
+	$humans.add_child(human)
+	human.global_position = Vector2((rand_range(margin, screensize.x - margin)), (rand_range(margin, screensize.y - margin))) # TODO: define area for spawning
+
+
 func _on_Timer_timeout():
+	return
 	var num_zombies := $zombies.get_child_count()
 	if num_zombies < num:
 		print("too few boids")

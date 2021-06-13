@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" load_steps=4 format=2]
+
+[sub_resource type="StreamTexture" id=1]
+load_path = "res://.import/npc1_Animation 5_0.png-5334e605e6e82007439f1b0620efd7d6.stex"
+
+[sub_resource type="StreamTexture" id=2]
+load_path = "res://.import/npc1_Animation 5_1.png-7db9270a506db32983fe331ee805c905.stex"
+
+[sub_resource type="StreamTexture" id=3]
+load_path = "res://.import/npc1_Animation 5_2.png-69963a22ed36f2df22f1f83c872840cc.stex"
+
+[resource]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]

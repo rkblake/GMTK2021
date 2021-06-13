@@ -1,0 +1,18 @@
+[gd_resource type="SpriteFrames" load_steps=4 format=2]
+
+[sub_resource type="StreamTexture" id=1]
+load_path = "res://.import/zombie1_Animation 3_0.png-d5045116c661d39a7de59e7d2f650656.stex"
+
+[sub_resource type="StreamTexture" id=2]
+load_path = "res://.import/zombie1_Animation 3_1.png-a85d1814efc57a58fa1bfe8264c377c7.stex"
+
+[sub_resource type="StreamTexture" id=3]
+load_path = "res://.import/zombie1_Animation 3_2.png-2528f82a374a8ed82cb33cc7d1abcda6.stex"
+
+[resource]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]

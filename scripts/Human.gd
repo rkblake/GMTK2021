@@ -1,25 +1,27 @@
+#extends Area2D
 extends KinematicBody2D
 
 onready var rays = $rays.get_children()
-var boids_in_vision := []
+var humans_in_vision := []
+var zombies_in_vision := []
 export var vel := Vector2.ZERO
-const SPEED := 1
+const SPEED := 125
 const MOVV := 48
 var rotate = 0
 
 var target
 const TARGET_WEIGHT = 0.5
-const SEPERATION_WEIGHT = 1.5
+const SEPERATION_WEIGHT = 3
 const COLLISION_AVOID_WEIGHT = 4
 
 func _ready():
 	randomize()
-	var path = "res://assets/zombie{0}_Animation/zombie{0}_anim.tres".format([(randi() % 6) + 1])
+	var path = "res://assets/npc{0}_Animation/npc{0}_anim.tres".format([(randi() % 6) + 1])
 	$AnimatedSprite.frames = load(path)
 
 
 func set_target(target):
-	self.target = target
+	pass
 
 
 func _physics_process(delta):
@@ -28,19 +30,16 @@ func _physics_process(delta):
 	vel = vel.normalized() * SPEED
 	move()
 	rotate = lerp_angle(rotate, vel.angle_to_point(Vector2.ZERO), 0.4)
+	$AnimatedSprite.flip_h = vel.x > 0
 
 
-func boids():
-	if target:
-			var dist = (target.position - position)
-			vel += dist * TARGET_WEIGHT  # TODO: have the weight falloff over distance
-	
-	if boids_in_vision:
-		var num_boids := boids_in_vision.size()
+func boids():	
+	if humans_in_vision:
+		var num_boids := humans_in_vision.size()
 		var avg_vel := Vector2.ZERO
 		var avg_pos := Vector2.ZERO
 		var steer_away := Vector2.ZERO
-		for boid in boids_in_vision:
+		for boid in humans_in_vision:
 			avg_vel += boid.vel
 			avg_pos += boid.position
 			steer_away -= (boid.global_position - global_position) * (MOVV/(global_position - boid.global_position).length())
@@ -56,6 +55,16 @@ func boids():
 		steer_away /= num_boids
 #		vel += steer_towards(steer_away)
 		vel += steer_away * SEPERATION_WEIGHT
+	
+	if zombies_in_vision:
+		var num_zoms := zombies_in_vision.size()
+		var steer_away := Vector2.ZERO
+		for boid in zombies_in_vision:
+			steer_away -= (boid.global_position - global_position) * (MOVV/(global_position - boid.global_position).length())
+		
+		steer_away /= num_zoms
+		vel += steer_away * SEPERATION_WEIGHT * 5
+		
 
 
 
@@ -73,21 +82,25 @@ func checkCollision():
 
 
 func move():
-	global_position += vel
-
+#	global_position += vel
+	move_and_slide(vel)
 
 
 func _on_vision_area_entered(area):
-	if area != self and area.is_in_group("zombie"):
-		boids_in_vision.append(area)
+	if area != self and area.is_in_group("human"):
+		humans_in_vision.append(area)
+	elif area != self and area.is_in_group("zombie"):
+		zombies_in_vision.append(area)
 
 
 func _on_vision_area_exited(area):
-	if area.is_in_group("zombie"):
-		boids_in_vision.erase(area)
+	if area.is_in_group("human"):
+		humans_in_vision.erase(area)
+	elif area.is_in_group("zombie"):
+		zombies_in_vision.erase(area) # TODO: zombie dying doesnt remove from this array. will cause crash
 
 
 func _on_Boid_body_entered(body):
-	if body and not body.is_in_group("player") and not body.is_in_group("human"):
+	if body.is_in_group("zombie") or body.is_in_group("player"):
 		print("boid died")
 		queue_free()
