@@ -19,14 +19,14 @@ extents = Vector2( 4.33119, 8.59135 )
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 90.3172, 56.6217 )
 
-[node name="Zombie" type="KinematicBody2D" groups=[
+[node name="Zombie" type="Area2D" groups=[
 "zombie",
 ]]
 script = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
-frame = 2
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

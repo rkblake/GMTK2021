@@ -1,11 +1,11 @@
-#extends Area2D
-extends KinematicBody2D
+extends Area2D
+#extends KinematicBody2D
 
 onready var rays = $rays.get_children()
 var humans_in_vision := []
 var zombies_in_vision := []
 export var vel := Vector2.ZERO
-const SPEED := 125
+const SPEED := 5
 const MOVV := 48
 var rotate = 0
 
@@ -13,6 +13,8 @@ var target
 const TARGET_WEIGHT = 0.5
 const SEPERATION_WEIGHT = 3
 const COLLISION_AVOID_WEIGHT = 4
+
+signal human_died(pos)
 
 func _ready():
 	randomize()
@@ -82,8 +84,8 @@ func checkCollision():
 
 
 func move():
-#	global_position += vel
-	move_and_slide(vel)
+	global_position += vel
+#	move_and_slide(vel)
 
 
 func _on_vision_area_entered(area):
@@ -101,6 +103,11 @@ func _on_vision_area_exited(area):
 
 
 func _on_Boid_body_entered(body):
+	pass
+
+
+func _on_Human_body_entered(body):
 	if body.is_in_group("zombie") or body.is_in_group("player"):
 		print("boid died")
+		emit_signal("boid_died", global_position)
 		queue_free()

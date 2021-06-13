@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Area2D
 
 onready var rays = $rays.get_children()
 var boids_in_vision := []
