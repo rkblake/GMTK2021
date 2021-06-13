@@ -109,5 +109,5 @@ func _on_Boid_body_entered(body):
 func _on_Human_body_entered(body):
 	if body.is_in_group("zombie") or body.is_in_group("player"):
 		print("boid died")
-		emit_signal("boid_died", global_position)
+		emit_signal("human_died", global_position)
 		queue_free()

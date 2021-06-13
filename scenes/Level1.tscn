@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://assets/fonts/beholden.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/logo.png" type="Texture" id=2]
@@ -22,7 +22,8 @@
 [ext_resource path="res://assets/tilesets/streetTile_twilight5_TN/sideWalkCorner_upleft.png" type="Texture" id=20]
 [ext_resource path="res://assets/tilesets/streetTile_twilight5_TN/sideWalk_left.png" type="Texture" id=21]
 [ext_resource path="res://assets/tilesets/streetTile_twilight5_TN/sideWalkCorner_upright.png" type="Texture" id=22]
-[ext_resource path="res://scenes/Human.tscn" type="PackedScene" id=23]
+[ext_resource path="res://assets/uiTest.png" type="Texture" id=23]
+[ext_resource path="res://assets/fonts/too_much_ink.tres" type="DynamicFont" id=24]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 28, 0, 28, 31, 0, 31 )
@@ -438,8 +439,6 @@ autostart = true
 
 [node name="humans" type="Node2D" parent="."]
 
-[node name="Human" parent="humans" instance=ExtResource( 23 )]
-
 [node name="Target" type="Area2D" parent="."]
 visible = false
 position = Vector2( 76, 95 )
@@ -469,6 +468,40 @@ drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 smoothing_enabled = true
 
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="GUI"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -319.854
+margin_top = -205.107
+margin_right = 119.146
+margin_bottom = 69.8932
+rect_scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 23 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Zombies" type="Label" parent="GUI/TextureRect"]
+margin_left = 71.4647
+margin_top = 168.123
+margin_right = 143.465
+margin_bottom = 182.123
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0.137255, 0.611765, 0.109804, 1 )
+text = "ZOMBIES: 0"
+
+[node name="Humans" type="Label" parent="GUI/TextureRect"]
+margin_left = 72.2575
+margin_top = 203.799
+margin_right = 242.258
+margin_bottom = 235.799
+custom_fonts/font = ExtResource( 24 )
+custom_colors/font_color = Color( 0.996078, 0.0313726, 0.0313726, 1 )
+text = "HUMANS: 0"
+
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="human_died" from="humans/Human" to="." method="_on_Human_human_died"]
 [connection signal="input_event" from="Target" to="Target" method="_on_Area2D_input_event"]
